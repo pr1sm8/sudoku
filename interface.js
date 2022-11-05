@@ -293,11 +293,27 @@ function redraw(givenstate, pos) {
       }
     }
   }
-  // Set last pick cell's background as cyan
   let lastpick = getLastPickRedraw();
+  //reset background to white
+  for(i=0;i<Sudoku.S;i++){
+    $('#sn' + i).css('background','')
+  }
+  //show conflicts
+  conflicts = SudokuHint.conflicts(boardsofar(state))
+  if(conflicts.length!=0){
+    for(i in conflicts[0].errors){
+      console.log(conflicts[0].errors[i])
+      $('#sn' + conflicts[0].errors[i]).css('background','red')
+    }
+  }
+  //console.log(conflicts)
+  
+
+  // Set last pick cell's background as cyan
   if(lastpick != undefined){
     $('#sn' + lastpick).css('background','cyan')
   }
+
 }
 
 // Makes a handwritten number, handling a glyph substitution.
