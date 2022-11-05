@@ -273,3 +273,13 @@ div.sudoku-popup#intro {
 .selected-cell{
   border: 1px #111 solid black;
 }
+
+input[type=button] {
+  background-color: orange;
+  border: none;
+  text-decoration: none;
+  color: white;
+  padding: 10px 10px;
+  margin: 10px 5px;
+  cursor: pointer;
+}
