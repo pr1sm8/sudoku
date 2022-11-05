@@ -108,19 +108,19 @@ function setupgame(seed) {
 /////////////////////////////////////////////////////////////////////////////
 
 // last selected position
-var lastpick = undefined;
-function setLastPick(n){
-  $('#sn'+lastpick).css('background','')
-  lastpick = n;
+var prevPos = undefined;
+function setprevPos(n){
+  $('#sn'+prevPos).css('background','')
+  prevPos = n;
 }
-function getLastPick(){
-  if (lastpick == undefined){
-    lastpick = 0;
+function getprevPos(){
+  if (prevPos == undefined){
+    prevPos = 0;
   }
-  return lastpick;
+  return prevPos;
 }
-function getLastPickRedraw(){
-  return lastpick;
+function getprevPosRedraw(){
+  return prevPos;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -294,9 +294,9 @@ function redraw(givenstate, pos) {
     }
   }
   // Set last pick cell's background as cyan
-  let lastpick = getLastPickRedraw();
-  if(lastpick != undefined){
-    $('#sn' + lastpick).css('background','cyan')
+  let prevPos = getprevPosRedraw();
+  if(prevPos != undefined){
+    $('#sn' + prevPos).css('background','cyan')
   }
 }
 
@@ -404,7 +404,7 @@ $(document).on('mousedown', 'td.sudoku-cell', function(ev) {
     }
   }
   // Set last pick to this position
-  setLastPick(pos);
+  setprevPos(pos);
   // Immediate redraw of just the keyed cell.
   redraw(state, pos);
   // Clear the current number.
@@ -425,9 +425,9 @@ $(document).on('click', 'td.sudoku-cell', function(ev) {
 
 $(document).on('keydown' , function(ev) {
   //console.log(ev);
-  let lastpick = getLastPick();
+  let prevPos = getprevPos();
   let state = currentstate();
-  // lastpick direction move with arrow keys
+  // prevPos direction move with arrow keys
   // 37 left, 38 up ,39 right ,40 down
 
   if(ev.which >= 37 && ev.which <= 40){
@@ -436,48 +436,48 @@ $(document).on('keydown' , function(ev) {
       case 37:
         //left cant go beyond 0, 4, 8, 12
         
-        if(lastpick != 0 && lastpick != 4 && lastpick != 8 && lastpick != 12 ){
-          setLastPick(lastpick-1);
+        if(prevPos != 0 && prevPos != 4 && prevPos != 8 && prevPos != 12 ){
+          setprevPos(prevPos-1);
         }
         break;
 
       case 38:
         //up cant go beyond 0, 1, 2, 3
         
-        if(lastpick != 0 && lastpick != 1 && lastpick != 2 && lastpick != 3 ){
-          setLastPick(lastpick-4);
+        if(prevPos != 0 && prevPos != 1 && prevPos != 2 && prevPos != 3 ){
+          setprevPos(prevPos-4);
         }
         break;
         
       case 39:
         //right cant go beyond 3, 7, 11, 15
         
-        if(lastpick != 3 && lastpick != 7 && lastpick != 11 && lastpick != 15 ){
-          setLastPick(lastpick+1);
+        if(prevPos != 3 && prevPos != 7 && prevPos != 11 && prevPos != 15 ){
+          setprevPos(prevPos+1);
         }
         break;
 
       case 40:
         //down cant go beyond 12, 13, 14, 15
         
-        if(lastpick != 12 && lastpick != 13 && lastpick != 14 && lastpick != 15 ){
-          setLastPick(lastpick+4);
+        if(prevPos != 12 && prevPos != 13 && prevPos != 14 && prevPos != 15 ){
+          setprevPos(prevPos+4);
         }
         break;
     }
     redraw();
   }else if(ev.which >= 49 && ev.which <= 52){
     // let state = currentstate();
-    // let lastpick = getLastPick();
+    // let prevPos = getprevPos();
 
-    // console.log(state.answer[lastpick])
-    // console.log(state.puzzle[lastpick])
+    // console.log(state.answer[prevPos])
+    // console.log(state.puzzle[prevPos])
 
-    // if(state.puzzle[lastpick] !== null){
+    // if(state.puzzle[prevPos] !== null){
     //   return;
     // }else{
     //   console.log(parseInt(ev.key));
-    //   state.answer[lastpick] = parseInt(ev.key);
+    //   state.answer[prevPos] = parseInt(ev.key);
     //   redraw(state);
     // }
 
@@ -486,16 +486,16 @@ $(document).on('keydown' , function(ev) {
     // ev.which is mapped to key on the keyboard 
     // ev.key is mapped to which 'character' is pressed on the keyboard
     let num = parseInt(ev.which - 49);
-    if (state.puzzle[lastpick] !== null) {
+    if (state.puzzle[prevPos] !== null) {
       return;
     }else if(isalt(ev)){
       //console.log('alt function number : '+num)
-      state.answer[lastpick] = null;
-      state.work[lastpick] ^= (1 << num);
+      state.answer[prevPos] = null;
+      state.work[prevPos] ^= (1 << num);
     }else{
       //console.log('normal function number : '+num)
-      state.answer[lastpick] = num;
-      state.work[lastpick] = 0;
+      state.answer[prevPos] = num;
+      state.work[prevPos] = 0;
       if (victorious(state)) {
         var now = (new Date).getTime();
         if (state.gentime > starttime) {
@@ -513,8 +513,8 @@ $(document).on('keydown' , function(ev) {
 
   //ev.which == 8 for backspace
   }else if(ev.which == 8){
-    state.answer[lastpick] = null;
-    state.work[lastpick] = 0;
+    state.answer[prevPos] = null;
+    state.work[prevPos] = 0;
   }
   // Immediate redraw of just the keyed cell.
   redraw(state);
