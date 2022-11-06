@@ -298,11 +298,13 @@ function redraw(givenstate, pos) {
   for(i=0;i<Sudoku.S;i++){
     $('#sn' + i).css('background','')
   }
-  //show conflicts
+  // show conflicts
   conflicts = SudokuHint.conflicts(boardsofar(state))
   if(conflicts.length!=0){
+    //$(document).trigger('log', ['conflicts', {seed: sinit.seed}]);
+    // console.log(conflicts)
     for(i in conflicts[0].errors){
-      console.log(conflicts[0].errors[i])
+      
       $('#sn' + conflicts[0].errors[i]).css('background','red')
     }
   }
@@ -389,10 +391,13 @@ $(document).on('mousedown', 'td.sudoku-cell', function(ev) {
   hidepopups();
   var pos = parseInt($(this).attr('id').substr(2));
   var state = currentstate();
+  var board = boardsofar(state);
   // Ignore the click if the square is given in the puzzle.
   if (state.puzzle[pos] !== null) return;
   // Internally we store "1" as "0".
   var num = curnumber - 1;
+  var answerBefore = state.answer[pos];
+  var workBefore = state.work[pos];
   if (num == -1) {
     // Erase this square.
     state.answer[pos] = null;
@@ -403,8 +408,19 @@ $(document).on('mousedown', 'td.sudoku-cell', function(ev) {
     state.work[pos] ^= (1 << num);
   } else {
     // Set the number
+    var valueBefore = state.answer[pos];
     state.answer[pos] = num;
     state.work[pos] = 0;
+    
+
+    //trigger conflicts event if conflicts are raised
+    let conflicts = SudokuHint.conflicts(boardsofar(state))
+    if(conflicts.length!=0){
+      console.log(conflicts);
+      $(this).trigger('log' , [conflicts[0].hint , {
+        errors : conflicts[0].errors,
+      }]);
+    }
     // Update elapsed time immediately, to avoid flicker upon victory.
     if (victorious(state)) {
       var now = (new Date).getTime();
@@ -419,6 +435,14 @@ $(document).on('mousedown', 'td.sudoku-cell', function(ev) {
       }]);
     }
   }
+  //trigger event on the cell giving it's state change
+  $(this).trigger('log' , ['cell_changed' , {
+    answerBefore: answerBefore,
+    answerAfter : state.answer[pos],
+    workBefore : workBefore,
+    workAfter : state.work[pos],
+  }])
+
   // Set last pick to this position
   // setLastPick(pos);
   // Immediate redraw of just the keyed cell.

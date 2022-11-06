@@ -8,5 +8,6 @@
 
 ## Ideas implemented
 
-- right click - erase instead of a button - remove the option selection menu from appearing
-- keyboard interaction - partial with only setting numbers
+- hinting when wrong moves are occuring
+- what answer is updated -- sn{x} - v(t-1) -> v(t) v=value t=time
+- custom events = cell_changed , conflicts
