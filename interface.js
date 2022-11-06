@@ -108,20 +108,20 @@ function setupgame(seed) {
 /////////////////////////////////////////////////////////////////////////////
 
 // last selected position
-var lastpick = undefined;
-function setLastPick(n){
-  $('#sn'+lastpick).css('background','')
-  lastpick = n;
-}
-function getLastPick(){
-  if (lastpick == undefined){
-    lastpick = 0;
-  }
-  return lastpick;
-}
-function getLastPickRedraw(){
-  return lastpick;
-}
+// var lastpick = undefined;
+// function setLastPick(n){
+//   $('#sn'+lastpick).css('background','')
+//   lastpick = n;
+// }
+// function getLastPick(){
+//   if (lastpick == undefined){
+//     lastpick = 0;
+//   }
+//   return lastpick;
+// }
+// function getLastPickRedraw(){
+//   return lastpick;
+// }
 
 /////////////////////////////////////////////////////////////////////////////
 // URL hash state management
@@ -293,7 +293,7 @@ function redraw(givenstate, pos) {
       }
     }
   }
-  let lastpick = getLastPickRedraw();
+  // let lastpick = getLastPickRedraw();
   //reset background to white
   for(i=0;i<Sudoku.S;i++){
     $('#sn' + i).css('background','')
@@ -310,9 +310,9 @@ function redraw(givenstate, pos) {
   
 
   // Set last pick cell's background as cyan
-  if(lastpick != undefined){
-    $('#sn' + lastpick).css('background','cyan')
-  }
+  // if(lastpick != undefined){
+  //   $('#sn' + lastpick).css('background','cyan')
+  // }
 
 }
 
@@ -420,7 +420,7 @@ $(document).on('mousedown', 'td.sudoku-cell', function(ev) {
     }
   }
   // Set last pick to this position
-  setLastPick(pos);
+  // setLastPick(pos);
   // Immediate redraw of just the keyed cell.
   redraw(state, pos);
   // Clear the current number.
@@ -439,107 +439,108 @@ $(document).on('click', 'td.sudoku-cell', function(ev) {
 
 // keyboard implementation of the game
 
-$(document).on('keydown' , function(ev) {
-  //console.log(ev);
-  let lastpick = getLastPick();
-  let state = currentstate();
-  // lastpick direction move with arrow keys
-  // 37 left, 38 up ,39 right ,40 down
+// $(document).on('keydown' , function(ev) {
+//   //console.log(ev);
+//   // let lastpick = getLastPick();
+//   let state = currentstate();
+//   // lastpick direction move with arrow keys
+//   // 37 left, 38 up ,39 right ,40 down
 
-  if(ev.which >= 37 && ev.which <= 40){
+//   if(ev.which >= 37 && ev.which <= 40){
     
-    switch (ev.which){
-      case 37:
-        //left cant go beyond 0, 4, 8, 12
+//     switch (ev.which){
+//       case 37:
+//         //left cant go beyond 0, 4, 8, 12
         
-        if(lastpick != 0 && lastpick != 4 && lastpick != 8 && lastpick != 12 ){
-          setLastPick(lastpick-1);
-        }
-        break;
+//         if(lastpick != 0 && lastpick != 4 && lastpick != 8 && lastpick != 12 ){
+//           setLastPick(lastpick-1);
+//         }
+//         break;
 
-      case 38:
-        //up cant go beyond 0, 1, 2, 3
+//       case 38:
+//         //up cant go beyond 0, 1, 2, 3
         
-        if(lastpick != 0 && lastpick != 1 && lastpick != 2 && lastpick != 3 ){
-          setLastPick(lastpick-4);
-        }
-        break;
+//         if(lastpick != 0 && lastpick != 1 && lastpick != 2 && lastpick != 3 ){
+//           setLastPick(lastpick-4);
+//         }
+//         break;
         
-      case 39:
-        //right cant go beyond 3, 7, 11, 15
+//       case 39:
+//         //right cant go beyond 3, 7, 11, 15
         
-        if(lastpick != 3 && lastpick != 7 && lastpick != 11 && lastpick != 15 ){
-          setLastPick(lastpick+1);
-        }
-        break;
+//         if(lastpick != 3 && lastpick != 7 && lastpick != 11 && lastpick != 15 ){
+//           setLastPick(lastpick+1);
+//         }
+//         break;
 
-      case 40:
-        //down cant go beyond 12, 13, 14, 15
+//       case 40:
+//         //down cant go beyond 12, 13, 14, 15
         
-        if(lastpick != 12 && lastpick != 13 && lastpick != 14 && lastpick != 15 ){
-          setLastPick(lastpick+4);
-        }
-        break;
-    }
-    redraw();
-  }else if(ev.which >= 49 && ev.which <= 52){
-    // let state = currentstate();
-    // let lastpick = getLastPick();
+//         if(lastpick != 12 && lastpick != 13 && lastpick != 14 && lastpick != 15 ){
+//           setLastPick(lastpick+4);
+//         }
+//         break;
+//     }
+//     redraw();
+//   }
+//   else if(ev.which >= 49 && ev.which <= 52){
+//     // let state = currentstate();
+//     // let lastpick = getLastPick();
 
-    // console.log(state.answer[lastpick])
-    // console.log(state.puzzle[lastpick])
+//     // console.log(state.answer[lastpick])
+//     // console.log(state.puzzle[lastpick])
 
-    // if(state.puzzle[lastpick] !== null){
-    //   return;
-    // }else{
-    //   console.log(parseInt(ev.key));
-    //   state.answer[lastpick] = parseInt(ev.key);
-    //   redraw(state);
-    // }
+//     // if(state.puzzle[lastpick] !== null){
+//     //   return;
+//     // }else{
+//     //   console.log(parseInt(ev.key));
+//     //   state.answer[lastpick] = parseInt(ev.key);
+//     //   redraw(state);
+//     // }
 
     
-    // Internally we store "1" as "0"
-    // ev.which is mapped to key on the keyboard 
-    // ev.key is mapped to which 'character' is pressed on the keyboard
-    let num = parseInt(ev.which - 49);
-    if (state.puzzle[lastpick] !== null) {
-      return;
-    }else if(isalt(ev)){
-      //console.log('alt function number : '+num)
-      state.answer[lastpick] = null;
-      state.work[lastpick] ^= (1 << num);
-    }else{
-      //console.log('normal function number : '+num)
-      state.answer[lastpick] = num;
-      state.work[lastpick] = 0;
-      if (victorious(state)) {
-        var now = (new Date).getTime();
-        if (state.gentime > starttime) {
-          starttime = state.gentime;
-        }
-        state.elapsed = (now - starttime);
+//     // Internally we store "1" as "0"
+//     // ev.which is mapped to key on the keyboard 
+//     // ev.key is mapped to which 'character' is pressed on the keyboard
+//     let num = parseInt(ev.which - 49);
+//     if (state.puzzle[lastpick] !== null) {
+//       return;
+//     }else if(isalt(ev)){
+//       //console.log('alt function number : '+num)
+//       state.answer[lastpick] = null;
+//       state.work[lastpick] ^= (1 << num);
+//     }else{
+//       //console.log('normal function number : '+num)
+//       state.answer[lastpick] = num;
+//       state.work[lastpick] = 0;
+//       if (victorious(state)) {
+//         var now = (new Date).getTime();
+//         if (state.gentime > starttime) {
+//           starttime = state.gentime;
+//         }
+//         state.elapsed = (now - starttime);
 
-        // Log the exact moment, along with the elapsed time in ms.
-        $(document).trigger('log', ['victory', {
-          elapsed: state.elapsed,
-          seed: currentstate().seed
-        }]);
-      }
-    }
+//         // Log the exact moment, along with the elapsed time in ms.
+//         $(document).trigger('log', ['victory', {
+//           elapsed: state.elapsed,
+//           seed: currentstate().seed
+//         }]);
+//       }
+//     }
 
-  //ev.which == 8 for backspace
-  }else if(ev.which == 8){
-    state.answer[lastpick] = null;
-    state.work[lastpick] = 0;
-  }
-  // Immediate redraw of just the keyed cell.
-  redraw(state);
+//   //ev.which == 8 for backspace
+//   }else if(ev.which == 8){
+//     state.answer[lastpick] = null;
+//     state.work[lastpick] = 0;
+//   }
+//   // Immediate redraw of just the keyed cell.
+//   redraw(state);
 
-  // Commit state after a timeout
-  setTimeout(function() {
-    commitstate(state);
-  }, 0);
-});
+//   // Commit state after a timeout
+//   setTimeout(function() {
+//     commitstate(state);
+//   }, 0);
+// });
 // Detects if a modifier key is pressed.
 
 function isalt(ev) {
