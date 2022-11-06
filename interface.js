@@ -431,19 +431,26 @@ $(document).on('keydown' , function(ev) {
   // 37 left, 38 up ,39 right ,40 down
 
   if(ev.which >= 37 && ev.which <= 40){
-    
+    var data = {
+      prevPos:null,
+      curPos:null,
+      direction:null,
+    };
+    data.prevPos = prevPos;
     switch (ev.which){
       case 37:
         //left cant go beyond 0, 4, 8, 12
-        
+        data.direction = "left"
         if(prevPos != 0 && prevPos != 4 && prevPos != 8 && prevPos != 12 ){
           setprevPos(prevPos-1);
+          
         }
+        
         break;
 
       case 38:
         //up cant go beyond 0, 1, 2, 3
-        
+        data.direction = "up"
         if(prevPos != 0 && prevPos != 1 && prevPos != 2 && prevPos != 3 ){
           setprevPos(prevPos-4);
         }
@@ -451,7 +458,7 @@ $(document).on('keydown' , function(ev) {
         
       case 39:
         //right cant go beyond 3, 7, 11, 15
-        
+        data.direction = "right"
         if(prevPos != 3 && prevPos != 7 && prevPos != 11 && prevPos != 15 ){
           setprevPos(prevPos+1);
         }
@@ -459,11 +466,17 @@ $(document).on('keydown' , function(ev) {
 
       case 40:
         //down cant go beyond 12, 13, 14, 15
-        
+        data.direction = "down"
         if(prevPos != 12 && prevPos != 13 && prevPos != 14 && prevPos != 15 ){
           setprevPos(prevPos+4);
         }
         break;
+    }
+    data.curPos = getprevPos();
+    if(data.curPos!=data.prevPos){
+      $(document).trigger('log' , ['keyboard_move' , data])
+    }else{
+      $(document).trigger('log' , ['keyboard_move_illegal' , data])
     }
     redraw();
   }else if(ev.which >= 49 && ev.which <= 52){
