@@ -21,13 +21,20 @@ errors on the board as it provides continual information
 ## New Logged Events
 
 cell_changed - an event that fires when a cell's value is changed
+
+```JSON
 {
     answerBefore - cell's answer before update
     answerAfter - cell's answer after update
     workBefore - cell's work before update
     workAfter - cell's work before update
 }
+```
+
 conflicts - event that is fired when there are conflicts in the board state
+
+```JSON
 {
     errors - contains an array of positions with conflicting values
 }
+```
