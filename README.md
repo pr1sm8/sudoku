@@ -10,8 +10,6 @@ This project is the source code for a basic Sudoku UI.  You should
 improve the interface, and then run an A/B test to see how users
 react to your changes.
 
-[Try it here.](https://rawgit.com/davidbau/sudokui/master/)
-
 This app has a number of features that might be improved. For example...
 
 - Filing a number needs two clicks: pick a number then a square.
